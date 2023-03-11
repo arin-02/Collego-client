@@ -52,7 +52,7 @@ const ResetPassword: React.FC = () => {
 
         <TextInput
           style={styles.input}
-          placeholder="New Password"
+          placeholder="New Password(must be 8 characters long)"
           value={newPassword}
           onChangeText={setnewPassword}
         />

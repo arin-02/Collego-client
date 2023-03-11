@@ -36,7 +36,7 @@ const Login = () => {
       style={{
         marginTop: '50%',
       }}>
-      <Text style={styles.textt}>WELCOME</Text>
+      <Text style={styles.textt}>WELCOME To Arin's To-do App</Text>
       <View style={{width: '100%', alignItems: 'center'}}>
         <TextInput
           style={styles.input}
@@ -48,7 +48,7 @@ const Login = () => {
         <TextInput
           secureTextEntry
           style={styles.input}
-          placeholder="Password"
+          placeholder="Password(must be 8 characters long)"
           value={pass}
           onChangeText={setPass}
         />
@@ -86,7 +86,7 @@ const Login = () => {
 };
 const styles = StyleSheet.create({
   textt: {
-    fontSize: 24,
+    fontSize: 18,
     textAlign: 'center',
     margin: 10,
     fontWeight: 'bold',

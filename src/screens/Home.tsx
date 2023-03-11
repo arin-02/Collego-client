@@ -67,7 +67,18 @@ const Home = () => {
           <Text
             style={styles.container}
             onPress={() => navigation.navigate('LOGIN')}>
-            All Tasks
+            Your's To-Do List
+          </Text>
+          <Text
+            style={{
+              flex: 1,
+              fontWeight: '600',
+              fontStyle: 'italic',
+              color: 'black',
+              alignSelf: 'center',
+            }}
+            onPress={() => navigation.navigate('LOGIN')}>
+            Click Here to add Tasks
           </Text>
           {user &&
             user.tasks.map((item: Task, index: number) => (

@@ -24,7 +24,7 @@ const ChangePassword: React.FC = () => {
         <TextInput
           secureTextEntry
           style={styles.input}
-          placeholder="Old Password"
+          placeholder="Old Password(must be 8 characters long)"
           value={oldPassword}
           onChangeText={setOldPassword}
         />
@@ -32,7 +32,7 @@ const ChangePassword: React.FC = () => {
         <TextInput
           secureTextEntry
           style={styles.input}
-          placeholder="New Password"
+          placeholder="New Password(must be 8 characters long)"
           value={newPassword}
           onChangeText={setnewPassword}
         />

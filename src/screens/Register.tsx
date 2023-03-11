@@ -101,7 +101,7 @@ const Register: React.FC = () => {
           <TextInput
             secureTextEntry
             style={styles.input}
-            placeholder="Password"
+            placeholder="Password((must be 8 characters long)"
             value={pass}
             onChangeText={setPass}
           />
@@ -119,6 +119,7 @@ const Register: React.FC = () => {
               marginTop: 10,
               fontWeight: '500',
               fontSize: 16,
+              color: 'black',
             }}>
             Have an Account, <Text style={{color: '#900'}}>Login</Text>
           </Text>
