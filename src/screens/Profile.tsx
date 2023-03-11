@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
       pic: route.params?.pic || '',
     });
   };
-  const submitHandler = () => {
+  const submitHandler = async () => {
     console.log('submitHandler');
     const myForm = new FormData();
     myForm.append('name', name);
@@ -47,7 +47,7 @@ const Profile: React.FC = () => {
       type: mime.getType(avatar),
       name: avatar.split('/').pop(),
     });
-    dispatch<any>(updateProfile(myForm));
+    await dispatch<any>(updateProfile(myForm));
     dispatch<any>(loadUser());
   };
 
@@ -55,14 +55,10 @@ const Profile: React.FC = () => {
     console.log('logoutHandler');
     dispatch<any>(logout());
   };
-  // useEffect(() => {
-  //   console.log('handleImage134inside profile');
-  //   if (user.avatar.url) {
-  //     setAvatar(user.avatar.url);
-  //   } else {
-  //     setAvatar('');
-  //   }
-  // }, [route, user.avatar.url]);
+
+  const handleVerification = () => {
+    navigation.navigate('VERIFY');
+  };
 
   useEffect(() => {
     if (route.params) {
@@ -124,11 +120,16 @@ const Profile: React.FC = () => {
           <Text
             style={{
               color: 'rgb(50, 50, 50)',
-              fontSize: 15,
+              fontSize: 18,
             }}>
             Logout
           </Text>
         </Button>
+        {user.verified ? null : (
+          <Button onPress={handleVerification}>
+            <Text style={{fontSize: 20}}>Verify</Text>
+          </Button>
+        )}
       </ScrollView>
     </View>
   );

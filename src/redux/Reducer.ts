@@ -59,6 +59,17 @@ export const authReducer = createReducer(initialState, {
     state.isAuthenticated = false;
     state.error = action.payload;
   },
+  verifyRequest: state => {
+    state.loading = true;
+  },
+  verifySuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  verifyFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
   logoutRequest: state => {
     state.loading = true;
   },
@@ -126,6 +137,7 @@ export const messageReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
+
   updatePasswordRequest: state => {
     state.loading = true;
   },
@@ -134,6 +146,28 @@ export const messageReducer = createReducer(initialState, {
     state.message = action.payload;
   },
   updatePasswordFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  forgotPasswordRequest: state => {
+    state.loading = true;
+  },
+  forgotPasswordSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  forgotPasswordFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  resetPasswordRequest: state => {
+    state.loading = true;
+  },
+  resetPasswordSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  resetPasswordFailure: (state, action) => {
     state.loading = false;
     state.error = action.payload;
   },

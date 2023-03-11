@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -100,7 +101,9 @@ const Home = () => {
           />
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <TouchableOpacity>
-              <Text onPress={hideDialog}>Cancel</Text>
+              <Text onPress={hideDialog} style={{color: 'black'}}>
+                Cancel
+              </Text>
             </TouchableOpacity>
             <Button
               textColor="#900"

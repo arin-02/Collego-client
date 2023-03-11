@@ -117,6 +117,65 @@ export const updatePassword =
       });
     }
   };
+export const forgetPassword =
+  (email: string) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      dispatch({type: 'forgotPasswordRequest'});
+      const {data} = await axios.post(
+        `${serverUrl}/forgotpassword`,
+        {email},
+        {
+          headers: {'Content-Type': 'application/json'},
+        },
+      );
+      dispatch({type: 'forgotPasswordSuccess', payload: data.message});
+    } catch (error: any) {
+      dispatch({
+        type: 'forgotPasswordFailure',
+        payload: error.response?.data?.message,
+      });
+    }
+  };
+export const resetPassword =
+  (otp: string, newPassword: string) =>
+  async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      dispatch({type: 'resetPasswordRequest'});
+      const {data} = await axios.put(
+        `${serverUrl}/resetpassword`,
+        {otp, newPassword},
+        {
+          headers: {'Content-Type': 'application/json'},
+        },
+      );
+      dispatch({type: 'resetPasswordSuccess', payload: data.message});
+    } catch (error: any) {
+      dispatch({
+        type: 'resetPasswordFailure',
+        payload: error.response?.data?.message,
+      });
+    }
+  };
+
+export const Verification =
+  (otp: string) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      dispatch({type: 'verifyRequest'});
+      const {data} = await axios.post(
+        `${serverUrl}/verify`,
+        {otp},
+        {
+          headers: {'Content-Type': 'application/json'},
+        },
+      );
+      dispatch({type: 'verifySuccess', payload: data.message});
+    } catch (error: any) {
+      dispatch({
+        type: 'verifyFailure',
+        payload: error.response?.data?.message,
+      });
+    }
+  };
 export const register =
   (formData: any) => async (dispatch: Dispatch<AnyAction>) => {
     try {
@@ -124,7 +183,7 @@ export const register =
       const {data} = await axios.post(`${serverUrl}/register`, formData, {
         headers: {'Content-Type': 'multipart/form-data'},
       });
-      dispatch({type: 'registerSuccess', payload: data.message});
+      dispatch({type: 'registerSuccess', payload: data});
     } catch (error: any) {
       dispatch({
         type: 'registerFailure',

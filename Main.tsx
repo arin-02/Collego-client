@@ -13,6 +13,9 @@ import Loader from './src/components/Loader';
 import {AnyAction, Dispatch} from '@reduxjs/toolkit';
 import {loadUser} from './src/redux/Action';
 import ChangePassword from './src/screens/ChangePassword';
+import Verify from './src/screens/Verify';
+import ForgotPassword from './src/screens/ForgotPassword';
+import ResetPassword from './src/screens/ResetPassword';
 
 export type RoutePathList = {
   HOME: undefined;
@@ -22,6 +25,8 @@ export type RoutePathList = {
   CAMERA: {updateProfile: boolean; pic: string};
   CHANGEPASSWORD: undefined;
   FORGOTPASSWORD: undefined;
+  RESETPASSWORD: undefined;
+  VERIFY: undefined;
 };
 
 const Stack = createNativeStackNavigator<RoutePathList>();
@@ -60,6 +65,11 @@ const Main = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="VERIFY"
+          component={Verify}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="CAMERA"
           component={Camera}
           options={{headerShown: false}}
@@ -67,6 +77,16 @@ const Main = () => {
         <Stack.Screen
           name="CHANGEPASSWORD"
           component={ChangePassword}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FORGOTPASSWORD"
+          component={ForgotPassword}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RESETPASSWORD"
+          component={ResetPassword}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
