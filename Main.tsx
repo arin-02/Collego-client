@@ -7,6 +7,9 @@ import Footer from './src/components/Footer';
 import Profile from './src/screens/Profile';
 import Register from './src/screens/Register';
 import Camera from './src/screens/Camera';
+import {useSelector} from 'react-redux';
+import {RootState} from './src/redux/Store';
+import Loader from './src/components/Loader';
 
 export type RoutePathList = {
   HOME: undefined;
@@ -17,10 +20,17 @@ export type RoutePathList = {
 };
 
 const Stack = createNativeStackNavigator<RoutePathList>();
+
 const Main = () => {
-  return (
+  const {isAuthenticated, loading} = useSelector(
+    (state: RootState) => state.auth,
+  );
+
+  return loading ? (
+    <Loader />
+  ) : (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="REGISTER">
+      <Stack.Navigator initialRouteName={isAuthenticated ? 'HOME' : 'LOGIN'}>
         <Stack.Screen
           name="HOME"
           component={Home}
@@ -43,7 +53,8 @@ const Main = () => {
           options={{headerShown: false}}
         />
       </Stack.Navigator>
-      <Footer />
+      {isAuthenticated && <Footer />}
+      {/* <Footer /> */}
     </NavigationContainer>
   );
 };

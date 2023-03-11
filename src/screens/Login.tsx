@@ -1,19 +1,41 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ToastAndroid,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RoutePathList} from '../../Main';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../redux/Action';
+import {AnyAction, Dispatch} from '@reduxjs/toolkit';
+import {RootState} from '../redux/Store';
 
 type LoginProps = NativeStackNavigationProp<RoutePathList, 'REGISTER'>;
 const Login = () => {
+  const dispatch = useDispatch<Dispatch<AnyAction>>();
   const navigation = useNavigation<LoginProps>();
   const [email, setEmail] = useState<string>('');
   const [pass, setPass] = useState<string>('');
 
+  const {error} = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    // console.log('=>', isAuthenticated);
+    if (error) {
+      Alert.alert(error);
+      dispatch({type: 'clearError'});
+    }
+  }, [error, dispatch]);
   const loginHandler = () => {
-    console.log(email, pass);
+    // console.log(email, pass);
+    console.log('login done');
+    dispatch<any>(login(email, pass));
   };
 
   return (
@@ -57,7 +79,8 @@ const Login = () => {
         }}>
         Or
       </Text>
-      <TouchableOpacity onPress={() => navigation.navigate('REGISTER')}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('REGISTER', {pic: ''})}>
         <Text style={styles.signuptext}>Sign Up</Text>
       </TouchableOpacity>
     </View>
