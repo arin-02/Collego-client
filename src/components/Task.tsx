@@ -4,18 +4,28 @@ import React, {useState} from 'react';
 import {CheckBox} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {useDispatch} from 'react-redux';
+import {AnyAction, Dispatch} from '@reduxjs/toolkit';
+import {deleteTask, loadUser, updateTask} from '../redux/Action';
 
 type TaskProps = {
-  title: String;
+  title: string;
   description: String;
   status: boolean;
-  taskId?: String;
+  taskId: string;
 };
-const Task = ({title, description, status}: TaskProps) => {
+const Task = ({title, description, status, taskId}: TaskProps) => {
   const [checked, setChecked] = useState<boolean>(status);
-  const toggleCheckbox = () => setChecked(!checked);
-  const deleteHandler = () => {
+  const handleCheckbox = () => {
+    setChecked(!checked);
+    console.log(taskId);
+    dispatch<any>(updateTask(taskId));
+  };
+  const dispatch = useDispatch<Dispatch<AnyAction>>();
+  const deleteHandler = async () => {
     console.log('deleteHandler');
+    await dispatch<any>(deleteTask(taskId));
+    dispatch<any>(loadUser());
   };
   return (
     <ScrollView>
@@ -28,7 +38,7 @@ const Task = ({title, description, status}: TaskProps) => {
         </View>
         <CheckBox
           checked={checked}
-          onPress={toggleCheckbox}
+          onPress={handleCheckbox}
           iconType="material-community"
           checkedIcon="checkbox-outline"
           uncheckedIcon={'checkbox-blank-outline'}

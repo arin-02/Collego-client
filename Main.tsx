@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './src/screens/Home';
@@ -7,24 +7,36 @@ import Footer from './src/components/Footer';
 import Profile from './src/screens/Profile';
 import Register from './src/screens/Register';
 import Camera from './src/screens/Camera';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from './src/redux/Store';
 import Loader from './src/components/Loader';
+import {AnyAction, Dispatch} from '@reduxjs/toolkit';
+import {loadUser} from './src/redux/Action';
+import ChangePassword from './src/screens/ChangePassword';
 
 export type RoutePathList = {
   HOME: undefined;
   LOGIN: undefined;
-  PROFILE: undefined;
+  PROFILE: {pic: string};
   REGISTER: {pic: string};
-  CAMERA: undefined;
+  CAMERA: {updateProfile: boolean; pic: string};
+  CHANGEPASSWORD: undefined;
+  FORGOTPASSWORD: undefined;
 };
 
 const Stack = createNativeStackNavigator<RoutePathList>();
 
 const Main = () => {
+  const dispatch = useDispatch<Dispatch<AnyAction>>();
+
   const {isAuthenticated, loading} = useSelector(
     (state: RootState) => state.auth,
   );
+
+  useEffect(() => {
+    console.log('===>', isAuthenticated);
+    dispatch<any>(loadUser());
+  }, [isAuthenticated, dispatch]);
 
   return loading ? (
     <Loader />
@@ -50,6 +62,11 @@ const Main = () => {
         <Stack.Screen
           name="CAMERA"
           component={Camera}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CHANGEPASSWORD"
+          component={ChangePassword}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

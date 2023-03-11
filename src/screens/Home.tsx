@@ -4,42 +4,61 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RoutePathList} from '../../Main';
 import Task from '../components/Task';
 import Icon from 'react-native-vector-icons/Entypo';
 import {Dialog, Button, TextInput} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {AnyAction, Dispatch} from '@reduxjs/toolkit';
+import {addTask, loadUser} from '../redux/Action';
+import {RootState} from '../redux/Store';
+
+type Task = {
+  title: string;
+  description: string;
+  completed: boolean;
+  _id: string;
+};
 
 type HomeNavigationProps = NativeStackNavigationProp<RoutePathList, 'HOME'>;
 const Home = () => {
+  const dispatch = useDispatch<Dispatch<AnyAction>>();
+  const {loading, message, error} = useSelector(
+    (state: RootState) => state.message,
+  );
+  const navigation = useNavigation<HomeNavigationProps>();
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [openDialog, setOpenDialog] = useState(false);
+
+  const {user} = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    if (error) {
+      Alert.alert(error);
+      dispatch({type: 'clearError'});
+    }
+    if (message) {
+      Alert.alert(message);
+      dispatch({type: 'clearMessage'});
+    }
+  }, [error, message, dispatch]);
+
   const hideDialog = () => {
     setOpenDialog(!openDialog);
   };
-  const addTaskHandler = () => {
+
+  const addTaskHandler = async () => {
     console.log(title, description);
     console.log('addTaskHandler');
+    await dispatch<any>(addTask(title, description));
+    dispatch<any>(loadUser());
   };
-  const navigation = useNavigation<HomeNavigationProps>();
-  const tasks = [
-    {
-      title: 'Title1',
-      description: 'description1',
-      completed: false,
-      _id: 'taskId1',
-    },
-    {
-      title: 'Title2',
-      description: 'description2',
-      completed: true,
-      _id: 'taskId2',
-    },
-  ];
+
   return (
     <>
       <View>
@@ -49,15 +68,16 @@ const Home = () => {
             onPress={() => navigation.navigate('LOGIN')}>
             All Tasks
           </Text>
-          {tasks.map((item, index) => (
-            <Task
-              key={index}
-              title={item.title}
-              description={item.description}
-              status={item.completed}
-              taskId={item._id}
-            />
-          ))}
+          {user &&
+            user.tasks.map((item: Task, index: number) => (
+              <Task
+                key={index}
+                title={item.title}
+                description={item.description}
+                status={item.completed}
+                taskId={item._id}
+              />
+            ))}
         </ScrollView>
         <TouchableOpacity style={styles.addBtn} onPress={hideDialog}>
           <Icon name="add-to-list" size={25} color="#900" />
@@ -82,7 +102,10 @@ const Home = () => {
             <TouchableOpacity>
               <Text onPress={hideDialog}>Cancel</Text>
             </TouchableOpacity>
-            <Button textColor="#900" onPress={addTaskHandler}>
+            <Button
+              textColor="#900"
+              onPress={addTaskHandler}
+              disabled={!title || !description || loading}>
               ADD
             </Button>
           </View>

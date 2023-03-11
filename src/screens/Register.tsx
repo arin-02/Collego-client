@@ -8,17 +8,19 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Avatar, Button, TextInput} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {RoutePathList} from '../../Main';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RouteProp} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {register} from '../redux/Action';
+import mime from 'mime';
+type RegisterProps = RouteProp<RoutePathList, 'REGISTER'>;
 
-type RegisterProps = {
-  route: RouteProp<RoutePathList, 'REGISTER'>;
-};
-
-const Register: React.FC<RegisterProps> = ({route}) => {
-  const {pic} = route.params || {pic: undefined};
+const Register: React.FC = () => {
+  const route = useRoute<RegisterProps>();
+  const dispatch = useDispatch();
+  const {pic} = route.params;
   const [avatar, setAvatar] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -31,6 +33,17 @@ const Register: React.FC<RegisterProps> = ({route}) => {
   const registerHandler = () => {
     console.log(name, email, pass);
     console.log('===>', pic);
+
+    const myForm = new FormData();
+    myForm.append('name', name);
+    myForm.append('email', email);
+    myForm.append('password', pass);
+    myForm.append('avatar', {
+      uri: avatar,
+      type: mime.getType(avatar),
+      name: avatar.split('/').pop(),
+    });
+    dispatch<any>(register(myForm));
   };
   useEffect(() => {
     if (pic) {
@@ -62,7 +75,12 @@ const Register: React.FC<RegisterProps> = ({route}) => {
               marginTop: 10,
               marginBottom: 10,
             }}
-            onPress={() => navigation.navigate('CAMERA')}>
+            onPress={() =>
+              navigation.navigate('CAMERA', {
+                updateProfile: false,
+                pic: route.params.pic,
+              })
+            }>
             Change Photo
           </Text>
         </TouchableOpacity>

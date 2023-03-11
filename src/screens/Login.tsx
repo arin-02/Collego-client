@@ -1,12 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ToastAndroid,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
@@ -82,6 +75,11 @@ const Login = () => {
       <TouchableOpacity
         onPress={() => navigation.navigate('REGISTER', {pic: ''})}>
         <Text style={styles.signuptext}>Sign Up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('FORGOTPASSWORD')}>
+        <Text style={{margin: 20, alignSelf: 'center', fontWeight: '500'}}>
+          Forgot Password
+        </Text>
       </TouchableOpacity>
     </View>
   );
